@@ -2746,3 +2746,914 @@ print("HTML Single-Page Web Application generated successfully at web_app/index.
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTS AI Fanbook Workspace</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandBg: '#FFE2E2',
+                        btsPink: '#F29AAE',
+                        btsTitle: '#E49BA6',
+                        btsBlue: '#95BDD7',
+                        btsDarkBg: '#120d18',
+                        btsDarkCard: '#1d1527'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Animate.css & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Charmonman:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        body { font-family: 'Montserrat', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .bg-main { background-color: #FFE2E2; }
+        .dark .bg-main { background-color: #120d18; }
+        .font-charmonman { font-family: 'Charmonman', cursive; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .dark .glass-card {
+            background: rgba(29, 21, 39, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(242, 154, 174, 0.2);
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #ececec 25%, #f5f5f5 50%, #ececec 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+        .dark .skeleton {
+            background: linear-gradient(90deg, #2a1f38 25%, #3a2b4c 50%, #2a1f38 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body class="bg-main text-gray-800 dark:text-gray-100 min-h-screen flex flex-col">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-50 glass-card px-6 py-4 flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-3">
+            <span class="text-2xl">💜</span>
+            <h1 class="text-xl md:text-2xl font-bold text-btsTitle dark:text-btsPink tracking-wide">BTS AI Workspace</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <!-- Dynamic Theme Switcher -->
+            <button id="themeToggle" class="p-2 rounded-full bg-white/60 dark:bg-gray-800/60 shadow hover:scale-105 transition">
+                <span id="themeIcon">🌙</span>
+            </button>
+            <!-- Config Modal Trigger -->
+            <button onclick="toggleConfigModal()" class="p-2 rounded-full bg-white/60 dark:bg-gray-800/60 shadow hover:scale-105 transition">
+                ⚙️
+            </button>
+            <!-- Auth Button -->
+            <button id="authBtn" onclick="handleAuth()" class="bg-btsPink hover:opacity-90 text-white font-semibold px-4 py-2 rounded-xl text-sm shadow transition">
+                Đăng Nhập Google
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT PANEL: TIMELINE & PHOTOBOOK PREVIEW (8 COLS) -->
+        <section class="lg:col-span-7 space-y-6">
+            <!-- Header Card -->
+            <div class="glass-card rounded-2xl p-6 shadow-lg animate__animated animate__fadeIn">
+                <h2 class="text-2xl font-bold text-btsTitle dark:text-btsPink mb-2">Hành trình Kỷ nguyên BTS</h2>
+                <p class="text-sm text-gray-600 dark:text-gray-300">Không gian tương tác đa năng dành cho ARMY: Lưu trữ cột mốc, phân tích ảnh OTP và trò chuyện cùng Trợ lý Gemini AI.</p>
+            </div>
+
+            <!-- Timeline Sample Item -->
+            <div class="glass-card rounded-2xl p-6 shadow-lg space-y-3 relative overflow-hidden animate__animated animate__fadeInUp">
+                <div class="flex justify-between items-center">
+                    <span class="bg-black text-white dark:bg-btsPink dark:text-gray-900 font-bold px-3 py-1 rounded-lg text-xs">13/06/2013</span>
+                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-btsBlue/30 text-btsBlue">#E3F2FD - Khởi Đầu</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">2 Cool 4 Skool - Ra Mắt Đầy Thử Thách</h3>
+                <p class="font-charmonman text-btsBlue text-lg">"Ước mơ của bạn là gì?"</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                    Đánh dấu sự xuất hiện của BTS với phong cách Hip-hop gai góc. Nhóm đối mặt với vô vàn áp lực tài chính và sự hoài nghi nhưng bùng nổ nhiệt huyết vượt qua rào cản.
+                </p>
+            </div>
+
+            <!-- Photobook Vision Preview Area -->
+            <div class="glass-card rounded-2xl p-6 shadow-lg space-y-4">
+                <h3 class="text-lg font-bold text-btsTitle dark:text-btsPink">📸 Multimodal Vision Photobook</h3>
+                <div id="dropZone" class="border-2 border-dashed border-btsPink/50 rounded-xl p-6 text-center cursor-pointer hover:bg-btsPink/5 transition">
+                    <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageSelect(event)">
+                    <div id="uploadPlaceholder" class="space-y-2">
+                        <span class="text-3xl">🖼️</span>
+                        <p class="text-sm font-semibold">Kéo thả hoặc nhấp để tải ảnh OTP / BTS lên</p>
+                        <p class="text-xs text-gray-500">Gemini sẽ tự động phân tích biểu cảm, trang phục & viết caption/fanfic</p>
+                    </div>
+                    <img id="imagePreview" class="hidden max-h-64 mx-auto rounded-lg shadow-md object-cover" />
+                </div>
+                <button onclick="analyzeImageWithGemini()" id="analyzeBtn" class="hidden w-full bg-btsBlue text-white font-bold py-2.5 rounded-xl hover:opacity-90 transition">
+                    ✨ Phân Tích & Tạo Caption Nghệ Thuật
+                </button>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: GEMINI AI CHAT WORKSPACE (5 COLS) -->
+        <section class="lg:col-span-5 flex flex-col h-[650px] glass-card rounded-2xl shadow-xl overflow-hidden">
+            <!-- Chat Header -->
+            <div class="bg-btsPink/20 dark:bg-btsDarkCard p-4 border-b border-btsPink/20 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 rounded-full bg-green-400 animate-pulse"></div>
+                    <h3 class="font-bold text-gray-800 dark:text-white">Cạ Cứng ARMY AI</h3>
+                </div>
+                <button onclick="clearChatHistory()" class="text-xs text-gray-500 hover:text-btsPink">Xóa Lịch Sử</button>
+            </div>
+
+            <!-- Chat Messages Box -->
+            <div id="chatBox" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
+                <div class="flex items-start space-x-2">
+                    <span class="text-xl">💜</span>
+                    <div class="bg-white/80 dark:bg-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%]">
+                        Annyeong! Mình là cạ cứng ARMY của bạn đây. Hôm nay bạn muốn "tám" về bias, soi khoảnh khắc OTP hay cần gợi ý fanfic nào không? Borahae! 💜
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skeleton Loader (Hidden by default) -->
+            <div id="skeletonLoader" class="hidden p-4 space-y-2">
+                <div class="flex items-start space-x-2">
+                    <div class="w-8 h-8 rounded-full skeleton"></div>
+                    <div class="space-y-2 flex-1">
+                        <div class="h-4 skeleton rounded w-3/4"></div>
+                        <div class="h-4 skeleton rounded w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input Box -->
+            <div class="p-3 bg-white/40 dark:bg-btsDarkCard/40 border-t border-btsPink/20 flex space-x-2">
+                <input type="text" id="userInput" onkeydown="if(event.key==='Enter') sendMessage()" placeholder="Nhắn gì đó với ARMY AI..." class="flex-1 bg-white/80 dark:bg-gray-800 text-gray-800 dark:text-white px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-btsPink text-sm">
+                <button onclick="sendMessage()" class="bg-btsPink text-white px-4 py-2.5 rounded-xl font-bold hover:opacity-90 transition">Gửi</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CONFIG MODAL (API KEY & FIREBASE) -->
+    <div id="configModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-btsDarkCard rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
+            <h3 class="text-lg font-bold text-btsTitle dark:text-btsPink">⚙️ Cấu Hình API & Lưu Trữ</h3>
+            
+            <div class="space-y-2">
+                <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Gemini API Key (localStorage)</label>
+                <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full px-3 py-2 border rounded-xl dark:bg-gray-800 text-sm focus:ring-2 focus:ring-btsPink outline-none">
+            </div>
+
+            <div class="text-xs text-gray-500 leading-relaxed">
+                Key được bảo mật lưu tại trình duyệt của bạn (localStorage). Không gửi lên máy chủ trung gian.
+            </div>
+
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="toggleConfigModal()" class="px-4 py-2 text-sm rounded-xl border hover:bg-gray-100 dark:hover:bg-gray-800">Hủy</button>
+                <button onclick="saveConfig()" class="px-4 py-2 text-sm rounded-xl bg-btsPink text-white font-bold">Lưu Cấu Hình</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC ENGINE -->
+    <script>
+        /* 1. STATE & STORAGE MANAGEMENT */
+        let GEMINI_API_KEY = localStorage.getItem('GEMINI_API_KEY') || '';
+        let chatHistory = JSON.parse(localStorage.getItem('CHAT_HISTORY')) || [];
+        let selectedBase64Image = null;
+
+        // System Instruction cho Gemini AI
+        const SYSTEM_INSTRUCTION = "Bạn là một ARMY kỳ cựu và là cạ cứng 'đu idol' của người dùng. Hãy nói chuyện bằng tông giọng thân thiết, hóm hỉnh, dùng các thuật ngữ K-Pop tự nhiên (như bias, OTP, comeback, Daesang, Borahae) và luôn hào hứng khi phân tích về BTS cũng như OTP.";
+
+        // Khởi tạo ứng dụng
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderChatHistory();
+            if (!GEMINI_API_KEY) toggleConfigModal();
+            
+            // Cấu hình Kéo/Thả ảnh
+            const dropZone = document.getElementById('dropZone');
+            dropZone.addEventListener('click', () => document.getElementById('imageInput').click());
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files.length) handleImageFile(e.dataTransfer.files[0]);
+            });
+        });
+
+        /* 2. DYNAMIC THEME SWITCHER */
+        function initTheme() {
+            const savedTheme = localStorage.getItem('THEME') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').innerText = '☀️';
+            }
+        }
+
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('THEME', isDark ? 'dark' : 'light');
+            document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
+        });
+
+        /* 3. CONFIG MODAL & LOCALSTORAGE */
+        function toggleConfigModal() {
+            const modal = document.getElementById('configModal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                document.getElementById('apiKeyInput').value = GEMINI_API_KEY;
+            }
+        }
+
+        function saveConfig() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            if (key) {
+                GEMINI_API_KEY = key;
+                localStorage.setItem('GEMINI_API_KEY', key);
+                alert('Đã lưu API Key thành công!');
+                toggleConfigModal();
+            }
+        }
+
+        /* 4. MULTI-TURN CHAT ENGINE (GEMINI API) */
+        async function sendMessage() {
+            const inputEl = document.getElementById('userInput');
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            if (!GEMINI_API_KEY) {
+                alert('Vui lòng nhập Gemini API Key trong phần cài đặt ⚙️!');
+                toggleConfigModal();
+                return;
+            }
+
+            // Append User Message UI
+            appendMessage('user', text);
+            inputEl.value = '';
+
+            // Update local memory history
+            chatHistory.push({ role: 'user', parts: [{ text: text }] });
+            saveChatHistoryLocal();
+
+            showSkeleton(true);
+
+            try {
+                // Call Gemini API with System Instruction & History
+                const responseText = await callGeminiChatAPI();
+                showSkeleton(false);
+                
+                // Append AI Response UI with Typing Effect
+                appendTypingMessage('model', responseText);
+                chatHistory.push({ role: 'model', parts: [{ text: responseText }] });
+                saveChatHistoryLocal();
+
+            } catch (err) {
+                showSkeleton(false);
+                appendMessage('model', '⚠️ Rất tiếc, cạ cứng AI bị ngắt kết nối. Vui lòng kiểm tra lại API Key hoặc đường truyền nhé!');
+            }
+        }
+
+        async function callGeminiChatAPI() {
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            
+            const payload = {
+                system_instruction: {
+                    parts: [{ text: SYSTEM_INSTRUCTION }]
+                },
+                contents: chatHistory
+            };
+
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        /* 5. MULTIMODAL VISION ENGINE */
+        function handleImageSelect(e) {
+            if (e.target.files.length) handleImageFile(e.target.files[0]);
+        }
+
+        function handleImageFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                selectedBase64Image = e.target.result.split(',')[1];
+                const imgPreview = document.getElementById('imagePreview');
+                imgPreview.src = e.target.result;
+                imgPreview.classList.remove('hidden');
+                document.getElementById('uploadPlaceholder').classList.add('hidden');
+                document.getElementById('analyzeBtn').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function analyzeImageWithGemini() {
+            if (!selectedBase64Image || !GEMINI_API_KEY) return;
+
+            showSkeleton(true);
+            try {
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+                
+                const payload = {
+                    system_instruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+                    contents: [{
+                        parts: [
+                            { text: "Hãy nhận diện biểu cảm, trang phục, khoảnh khắc OTP/BTS trong bức ảnh này và viết một caption thật cảm xúc hoặc một đoạn gợi ý cốt truyện ngắn đầy cuốn hút!" },
+                            { inline_data: { mime_type: "image/jpeg", data: selectedBase64Image } }
+                        ]
+                    }]
+                };
+
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                const analysisText = data.candidates[0].content.parts[0].text;
+                
+                showSkeleton(false);
+                appendTypingMessage('model', `📷 **Phân Tích Ảnh OTP:**\n\n${analysisText}`);
+                
+            } catch (err) {
+                showSkeleton(false);
+                alert('Không thể phân tích ảnh. Vui lòng kiểm tra lại API Key!');
+            }
+        }
+
+        /* 6. UI HELPER FUNCTIONS & TYPING EFFECT */
+        function appendMessage(role, text) {
+            const chatBox = document.getElementById('chatBox');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `flex items-start space-x-2 ${role === 'user' ? 'justify-end' : ''}`;
+
+            const isUser = role === 'user';
+            msgDiv.innerHTML = `
+                ${!isUser ? '<span class="text-xl">💜</span>' : ''}
+                <div class="${isUser ? 'bg-btsPink text-white rounded-tr-none' : 'bg-white/80 dark:bg-gray-800 rounded-tl-none'} p-3 rounded-2xl shadow-sm max-w-[85%] whitespace-pre-wrap">
+                    ${text}
+                </div>
+                ${isUser ? '<span class="text-xl">👤</span>' : ''}
+            `;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function appendTypingMessage(role, fullText) {
+            const chatBox = document.getElementById('chatBox');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'flex items-start space-x-2';
+
+            const textContainer = document.createElement('div');
+            textContainer.className = 'bg-white/80 dark:bg-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] whitespace-pre-wrap';
+            
+            msgDiv.innerHTML = '<span class="text-xl">💜</span>';
+            msgDiv.appendChild(textContainer);
+            chatBox.appendChild(msgDiv);
+
+            let index = 0;
+            const timer = setInterval(() => {
+                textContainer.textContent += fullText.charAt(index);
+                index++;
+                chatBox.scrollTop = chatBox.scrollHeight;
+                if (index >= fullText.length) clearInterval(timer);
+            }, 15);
+        }
+
+        function showSkeleton(show) {
+            document.getElementById('skeletonLoader').classList.toggle('hidden', !show);
+        }
+
+        function saveChatHistoryLocal() {
+            localStorage.setItem('CHAT_HISTORY', JSON.stringify(chatHistory));
+        }
+
+        function renderChatHistory() {
+            chatHistory.forEach(msg => {
+                appendMessage(msg.role, msg.parts[0].text);
+            });
+        }
+
+        function clearChatHistory() {
+            chatHistory = [];
+            localStorage.removeItem('CHAT_HISTORY');
+            document.getElementById('chatBox').innerHTML = '';
+        }
+
+        /* 7. FIREBASE AUTH & DUAL-LAYER STORAGE INTEGRATION */
+        // Cấu hình mẫu Firebase (Thay thế bằng config thực tế từ Firebase Console của bạn)
+        const firebaseConfig = {
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            authDomain: "bts-ai-workspace.firebaseapp.com",
+            projectId: "bts-ai-workspace",
+            storageBucket: "bts-ai-workspace.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef"
+        };
+
+        // Khởi tạo Firebase nếu đã được điền thông tin thực tế
+        if (firebaseConfig.apiKey !== "YOUR_FIREBASE_API_KEY") {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        function handleAuth() {
+            if (firebaseConfig.apiKey === "YOUR_FIREBASE_API_KEY") {
+                alert("Tính năng Đăng nhập Firebase đã sẵn sàng! Bạn vui lòng cập nhật thông tin 'firebaseConfig' trong file HTML để kích hoạt nhé.");
+                return;
+            }
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then((result) => {
+                document.getElementById('authBtn').innerText = result.user.displayName;
+                alert(`Xin chào ${result.user.displayName}! Dữ liệu đã được đồng bộ Firebase.`);
+            }).catch((err) => console.error(err));
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memoirly - AI Fanbook & OTP Workspace</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandBg: '#FFE2E2',
+                        btsPink: '#F29AAE',
+                        btsTitle: '#E49BA6',
+                        btsBlue: '#95BDD7',
+                        btsDarkBg: '#120d18',
+                        btsDarkCard: '#1d1527'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Animate.css & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Charmonman:wght@700&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        body { font-family: 'Montserrat', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .bg-main { background-color: #FFE2E2; }
+        .dark .bg-main { background-color: #120d18; }
+        .font-charmonman { font-family: 'Charmonman', cursive; }
+        .brand-logo { font-weight: 800; letter-spacing: -0.03em; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .dark .glass-card {
+            background: rgba(29, 21, 39, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(242, 154, 174, 0.2);
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #ececec 25%, #f5f5f5 50%, #ececec 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+        .dark .skeleton {
+            background: linear-gradient(90deg, #2a1f38 25%, #3a2b4c 50%, #2a1f38 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body class="bg-main text-gray-800 dark:text-gray-100 min-h-screen flex flex-col">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-50 glass-card px-6 py-4 flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-3">
+            <span class="text-2xl">💜</span>
+            <div>
+                <h1 class="brand-logo text-2xl md:text-3xl text-btsTitle dark:text-btsPink">Memoirly<span class="text-xs ml-1.5 font-normal text-btsBlue bg-white/60 dark:bg-gray-800 px-2 py-0.5 rounded-full border border-btsBlue/30">AI Edition</span></h1>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <!-- Dynamic Theme Switcher -->
+            <button id="themeToggle" class="p-2 rounded-full bg-white/60 dark:bg-gray-800/60 shadow hover:scale-105 transition">
+                <span id="themeIcon">🌙</span>
+            </button>
+            <!-- Config Modal Trigger -->
+            <button onclick="toggleConfigModal()" class="p-2 rounded-full bg-white/60 dark:bg-gray-800/60 shadow hover:scale-105 transition">
+                ⚙️
+            </button>
+            <!-- Auth Button -->
+            <button id="authBtn" onclick="handleAuth()" class="bg-btsPink hover:opacity-90 text-white font-semibold px-4 py-2 rounded-xl text-sm shadow transition">
+                Đăng Nhập Google
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT PANEL: TIMELINE & PHOTOBOOK PREVIEW (7 COLS) -->
+        <section class="lg:col-span-7 space-y-6">
+            <!-- Header Card -->
+            <div class="glass-card rounded-2xl p-6 shadow-lg animate__animated animate__fadeIn">
+                <h2 class="text-2xl font-bold text-btsTitle dark:text-btsPink mb-1">Memoirly Fanbook & Timeline</h2>
+                <p class="text-xs text-btsBlue font-bold uppercase tracking-wider mb-2">Ghi dấu khoảnh khắc • Lưu giữ kỷ niệm BTS & OTP</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300">Không gian tương tác đa năng: Lưu trữ cột mốc kỷ nguyên, phân tích ảnh OTP nghệ thuật và trò chuyện cùng Trợ lý Gemini AI.</p>
+            </div>
+
+            <!-- Timeline Sample Item -->
+            <div class="glass-card rounded-2xl p-6 shadow-lg space-y-3 relative overflow-hidden animate__animated animate__fadeInUp">
+                <div class="flex justify-between items-center">
+                    <span class="bg-black text-white dark:bg-btsPink dark:text-gray-900 font-bold px-3 py-1 rounded-lg text-xs">13/06/2013</span>
+                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-btsBlue/30 text-btsBlue">#MemoirlyTimeline - Debut</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">2 Cool 4 Skool - Ra Mắt Đầy Thử Thách</h3>
+                <p class="font-charmonman text-btsBlue text-lg">"Ước mơ của bạn là gì?"</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                    Đánh dấu sự xuất hiện của BTS với phong cách Hip-hop gai góc. Nhóm đối mặt với vô vàn áp lực tài chính và sự hoài nghi nhưng bùng nổ nhiệt huyết vượt qua rào cản.
+                </p>
+            </div>
+
+            <!-- Photobook Vision Preview Area -->
+            <div class="glass-card rounded-2xl p-6 shadow-lg space-y-4">
+                <h3 class="text-lg font-bold text-btsTitle dark:text-btsPink">📸 Memoirly Vision Photobook</h3>
+                <div id="dropZone" class="border-2 border-dashed border-btsPink/50 rounded-xl p-6 text-center cursor-pointer hover:bg-btsPink/5 transition">
+                    <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageSelect(event)">
+                    <div id="uploadPlaceholder" class="space-y-2">
+                        <span class="text-3xl">🖼️</span>
+                        <p class="text-sm font-semibold">Kéo thả hoặc nhấp để tải ảnh OTP / BTS lên Memoirly</p>
+                        <p class="text-xs text-gray-500">Gemini AI sẽ tự động phân tích biểu cảm, trang phục & sáng tác caption nghệ thuật</p>
+                    </div>
+                    <img id="imagePreview" class="hidden max-h-64 mx-auto rounded-lg shadow-md object-cover" />
+                </div>
+                <button onclick="analyzeImageWithGemini()" id="analyzeBtn" class="hidden w-full bg-btsBlue text-white font-bold py-2.5 rounded-xl hover:opacity-90 transition">
+                    ✨ Phân Tích & Sáng Tạo Caption
+                </button>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: GEMINI AI CHAT WORKSPACE (5 COLS) -->
+        <section class="lg:col-span-5 flex flex-col h-[650px] glass-card rounded-2xl shadow-xl overflow-hidden">
+            <!-- Chat Header -->
+            <div class="bg-btsPink/20 dark:bg-btsDarkCard p-4 border-b border-btsPink/20 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 rounded-full bg-green-400 animate-pulse"></div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 dark:text-white leading-tight">Memoirly AI Assistant</h3>
+                        <p class="text-[10px] text-gray-500">Trợ lý Cạ Cứng ARMY</p>
+                    </div>
+                </div>
+                <button onclick="clearChatHistory()" class="text-xs text-gray-500 hover:text-btsPink">Xóa Lịch Sử</button>
+            </div>
+
+            <!-- Chat Messages Box -->
+            <div id="chatBox" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
+                <div class="flex items-start space-x-2">
+                    <span class="text-xl">💜</span>
+                    <div class="bg-white/80 dark:bg-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%]">
+                        Annyeong! Mình là cạ cứng ARMY tại Memoirly đây. Hôm nay bạn muốn "tám" về bias, soi khoảnh khắc OTP hay cần gợi ý fanfic nào không? Borahae! 💜
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skeleton Loader -->
+            <div id="skeletonLoader" class="hidden p-4 space-y-2">
+                <div class="flex items-start space-x-2">
+                    <div class="w-8 h-8 rounded-full skeleton"></div>
+                    <div class="space-y-2 flex-1">
+                        <div class="h-4 skeleton rounded w-3/4"></div>
+                        <div class="h-4 skeleton rounded w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input Box -->
+            <div class="p-3 bg-white/40 dark:bg-btsDarkCard/40 border-t border-btsPink/20 flex space-x-2">
+                <input type="text" id="userInput" onkeydown="if(event.key==='Enter') sendMessage()" placeholder="Nhắn gì đó với Memoirly AI..." class="flex-1 bg-white/80 dark:bg-gray-800 text-gray-800 dark:text-white px-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-btsPink text-sm">
+                <button onclick="sendMessage()" class="bg-btsPink text-white px-4 py-2.5 rounded-xl font-bold hover:opacity-90 transition">Gửi</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CONFIG MODAL (API KEY & FIREBASE) -->
+    <div id="configModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-btsDarkCard rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
+            <h3 class="text-lg font-bold text-btsTitle dark:text-btsPink">⚙️ Cấu Hình Memoirly Engine</h3>
+            
+            <div class="space-y-2">
+                <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Gemini API Key (localStorage)</label>
+                <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full px-3 py-2 border rounded-xl dark:bg-gray-800 text-sm focus:ring-2 focus:ring-btsPink outline-none">
+            </div>
+
+            <div class="text-xs text-gray-500 leading-relaxed">
+                Key được bảo mật lưu tại bộ nhớ riêng của Memoirly trên trình duyệt người dùng (localStorage).
+            </div>
+
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="toggleConfigModal()" class="px-4 py-2 text-sm rounded-xl border hover:bg-gray-100 dark:hover:bg-gray-800">Hủy</button>
+                <button onclick="saveConfig()" class="px-4 py-2 text-sm rounded-xl bg-btsPink text-white font-bold">Lưu Cấu Hình</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC ENGINE -->
+    <script>
+        /* 1. STATE & STORAGE MANAGEMENT */
+        let GEMINI_API_KEY = localStorage.getItem('MEMOIRLY_API_KEY') || '';
+        let chatHistory = JSON.parse(localStorage.getItem('MEMOIRLY_CHAT_HISTORY')) || [];
+        let selectedBase64Image = null;
+
+        // System Instruction cho Gemini AI tại Memoirly Workspace
+        const SYSTEM_INSTRUCTION = "Bạn là trợ lý AI chính thức của trang web Memoirly, đóng vai một ARMY kỳ cựu và là cạ cứng 'đu idol' của người dùng. Hãy nói chuyện bằng tông giọng thân thiết, hóm hỉnh, dùng các thuật ngữ K-Pop tự nhiên (như bias, OTP, comeback, Daesang, Borahae) và luôn hào hứng khi phân tích về BTS cũng như OTP.";
+
+        // Khởi tạo ứng dụng Memoirly
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderChatHistory();
+            if (!GEMINI_API_KEY) toggleConfigModal();
+            
+            // Cấu hình Kéo/Thả ảnh
+            const dropZone = document.getElementById('dropZone');
+            dropZone.addEventListener('click', () => document.getElementById('imageInput').click());
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files.length) handleImageFile(e.dataTransfer.files[0]);
+            });
+        });
+
+        /* 2. DYNAMIC THEME SWITCHER */
+        function initTheme() {
+            const savedTheme = localStorage.getItem('MEMOIRLY_THEME') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').innerText = '☀️';
+            }
+        }
+
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('MEMOIRLY_THEME', isDark ? 'dark' : 'light');
+            document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
+        });
+
+        /* 3. CONFIG MODAL & LOCALSTORAGE */
+        function toggleConfigModal() {
+            const modal = document.getElementById('configModal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                document.getElementById('apiKeyInput').value = GEMINI_API_KEY;
+            }
+        }
+
+        function saveConfig() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            if (key) {
+                GEMINI_API_KEY = key;
+                localStorage.setItem('MEMOIRLY_API_KEY', key);
+                alert('Đã lưu API Key vào Memoirly thành công!');
+                toggleConfigModal();
+            }
+        }
+
+        /* 4. MULTI-TURN CHAT ENGINE (GEMINI API) */
+        async function sendMessage() {
+            const inputEl = document.getElementById('userInput');
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            if (!GEMINI_API_KEY) {
+                alert('Vui lòng nhập Gemini API Key trong phần cài đặt ⚙️!');
+                toggleConfigModal();
+                return;
+            }
+
+            appendMessage('user', text);
+            inputEl.value = '';
+
+            chatHistory.push({ role: 'user', parts: [{ text: text }] });
+            saveChatHistoryLocal();
+
+            showSkeleton(true);
+
+            try {
+                const responseText = await callGeminiChatAPI();
+                showSkeleton(false);
+                
+                appendTypingMessage('model', responseText);
+                chatHistory.push({ role: 'model', parts: [{ text: responseText }] });
+                saveChatHistoryLocal();
+
+            } catch (err) {
+                showSkeleton(false);
+                appendMessage('model', '⚠️ Kết nối Memoirly AI bị gián đoạn. Vui lòng kiểm tra lại API Key hoặc mạng của bạn nhé!');
+            }
+        }
+
+        async function callGeminiChatAPI() {
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            
+            const payload = {
+                system_instruction: {
+                    parts: [{ text: SYSTEM_INSTRUCTION }]
+                },
+                contents: chatHistory
+            };
+
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        /* 5. MULTIMODAL VISION ENGINE */
+        function handleImageSelect(e) {
+            if (e.target.files.length) handleImageFile(e.target.files[0]);
+        }
+
+        function handleImageFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                selectedBase64Image = e.target.result.split(',')[1];
+                const imgPreview = document.getElementById('imagePreview');
+                imgPreview.src = e.target.result;
+                imgPreview.classList.remove('hidden');
+                document.getElementById('uploadPlaceholder').classList.add('hidden');
+                document.getElementById('analyzeBtn').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function analyzeImageWithGemini() {
+            if (!selectedBase64Image || !GEMINI_API_KEY) return;
+
+            showSkeleton(true);
+            try {
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+                
+                const payload = {
+                    system_instruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+                    contents: [{
+                        parts: [
+                            { text: "Hãy nhận diện biểu cảm, trang phục, khoảnh khắc OTP/BTS trong bức ảnh này và viết một caption thật cảm xúc hoặc một đoạn gợi ý cốt truyện ngắn đầy cuốn hút!" },
+                            { inline_data: { mime_type: "image/jpeg", data: selectedBase64Image } }
+                        ]
+                    }]
+                };
+
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                const analysisText = data.candidates[0].content.parts[0].text;
+                
+                showSkeleton(false);
+                appendTypingMessage('model', `📷 **Phân Tích Bức Ảnh Tới Memoirly:**\n\n${analysisText}`);
+                
+            } catch (err) {
+                showSkeleton(false);
+                alert('Không thể phân tích ảnh. Vui lòng kiểm tra lại API Key!');
+            }
+        }
+
+        /* 6. UI HELPER FUNCTIONS & TYPING EFFECT */
+        function appendMessage(role, text) {
+            const chatBox = document.getElementById('chatBox');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `flex items-start space-x-2 ${role === 'user' ? 'justify-end' : ''}`;
+
+            const isUser = role === 'user';
+            msgDiv.innerHTML = `
+                ${!isUser ? '<span class="text-xl">💜</span>' : ''}
+                <div class="${isUser ? 'bg-btsPink text-white rounded-tr-none' : 'bg-white/80 dark:bg-gray-800 rounded-tl-none'} p-3 rounded-2xl shadow-sm max-w-[85%] whitespace-pre-wrap">
+                    ${text}
+                </div>
+                ${isUser ? '<span class="text-xl">👤</span>' : ''}
+            `;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function appendTypingMessage(role, fullText) {
+            const chatBox = document.getElementById('chatBox');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'flex items-start space-x-2';
+
+            const textContainer = document.createElement('div');
+            textContainer.className = 'bg-white/80 dark:bg-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] whitespace-pre-wrap';
+            
+            msgDiv.innerHTML = '<span class="text-xl">💜</span>';
+            msgDiv.appendChild(textContainer);
+            chatBox.appendChild(msgDiv);
+
+            let index = 0;
+            const timer = setInterval(() => {
+                textContainer.textContent += fullText.charAt(index);
+                index++;
+                chatBox.scrollTop = chatBox.scrollHeight;
+                if (index >= fullText.length) clearInterval(timer);
+            }, 15);
+        }
+
+        function showSkeleton(show) {
+            document.getElementById('skeletonLoader').classList.toggle('hidden', !show);
+        }
+
+        function saveChatHistoryLocal() {
+            localStorage.setItem('MEMOIRLY_CHAT_HISTORY', JSON.stringify(chatHistory));
+        }
+
+        function renderChatHistory() {
+            chatHistory.forEach(msg => {
+                appendMessage(msg.role, msg.parts[0].text);
+            });
+        }
+
+        function clearChatHistory() {
+            chatHistory = [];
+            localStorage.removeItem('MEMOIRLY_CHAT_HISTORY');
+            document.getElementById('chatBox').innerHTML = '';
+        }
+
+        /* 7. FIREBASE AUTH & DUAL-LAYER STORAGE INTEGRATION */
+        const firebaseConfig = {
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            authDomain: "memoirly-app.firebaseapp.com",
+            projectId: "memoirly-app",
+            storageBucket: "memoirly-app.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef"
+        };
+
+        if (firebaseConfig.apiKey !== "YOUR_FIREBASE_API_KEY") {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        function handleAuth() {
+            if (firebaseConfig.apiKey === "YOUR_FIREBASE_API_KEY") {
+                alert("Tính năng Đăng nhập Firebase cho Memoirly đã sẵn sàng! Bạn chỉ cần cập nhật 'firebaseConfig' trong file HTML.");
+                return;
+            }
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then((result) => {
+                document.getElementById('authBtn').innerText = result.user.displayName;
+                alert(`Xin chào ${result.user.displayName}! Dữ liệu Memoirly của bạn đã đồng bộ Firebase.`);
+            }).catch((err) => console.error(err));
+        }
+    </script>
+</body>
+</html>
