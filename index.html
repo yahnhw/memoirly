@@ -3657,3 +3657,553 @@ print("HTML Single-Page Web Application generated successfully at web_app/index.
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hành trình kỷ nguyên BTS & OTP Photobook</title>
+    
+    <!-- Nhúng Google Fonts: Charmonman, Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Nhúng Font Leyton cho tiêu đề */
+        @font-face {
+            font-family: 'Leyton';
+            src: local('Leyton'), local('Leyton-Regular'), 
+                 url('https://fonts.cdnfonts.com/s/72895/Leyton.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --bg-color: #FFE2E2;        /* Màu nền trang web mới theo yêu cầu */
+            --timeline-color: #F29AAE;  /* Màu thanh timeline */
+            --title-color: #C85A75;     /* Màu tiêu đề (điều chỉnh tương phản trên nền sáng) */
+            --slogan-color: #588BAE;    /* Màu khẩu hiệu (điều chỉnh rõ nét trên nền sáng) */
+            --date-color: #000000;      /* Màu chữ ngày tháng năm đen */
+            --glass-bg: rgba(255, 255, 255, 0.65); /* Kính mờ sáng */
+            --glass-border: rgba(242, 154, 174, 0.4);
+            --text-main: #2D2B35;       /* Chữ chính màu tối giúp dễ đọc */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(242, 154, 174, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 85% 85%, rgba(149, 189, 215, 0.25) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .main-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header tiêu đề chính */
+        .page-header {
+            margin-bottom: 50px;
+            text-align: left;
+        }
+
+        .page-header h1 {
+            font-family: 'Leyton', 'Playfair Display', serif;
+            color: var(--title-color);
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(200, 90, 117, 0.15);
+        }
+
+        .page-header p {
+            color: #635E6D;
+            font-size: 1rem;
+        }
+
+        /* ----------------------------------
+           SECTION 1: TIMELINE BTS
+        ---------------------------------- */
+        .timeline-container {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 70px;
+        }
+
+        /* Thanh đường ray cột mốc màu #F29AAE */
+        .timeline-rail {
+            position: absolute;
+            top: 20px;
+            bottom: 30px;
+            left: 18px;
+            width: 4px;
+            background-color: var(--timeline-color);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(242, 154, 174, 0.5);
+        }
+
+        /* Khung kính mờ sáng (Glass Card) */
+        .timeline-card {
+            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 26px;
+            margin-bottom: 35px;
+            box-shadow: 0 10px 25px rgba(200, 100, 120, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-card:hover {
+            border-color: var(--timeline-color);
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(242, 154, 174, 0.25);
+        }
+
+        /* Nút tròn phát sáng trên thanh cột mốc */
+        .timeline-node {
+            position: absolute;
+            left: -51px;
+            top: 28px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--timeline-color);
+            border: 3px solid var(--bg-color);
+            box-shadow: 0 0 10px var(--timeline-color);
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-card:hover .timeline-node {
+            transform: scale(1.3);
+        }
+
+        /* Badge Ngày Tháng Năm (Chữ màu Đen) */
+        .card-date-badge {
+            display: inline-block;
+            background-color: #FFFFFF;
+            color: var(--date-color);
+            font-weight: 700;
+            font-size: 0.88rem;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Slogan / Khẩu hiệu (Font Charmonman - Màu #588BAE) */
+        .card-slogan {
+            font-family: 'Charmonman', cursive;
+            color: var(--slogan-color);
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        /* Nội dung sự kiện */
+        .card-content {
+            font-size: 0.98rem;
+            line-height: 1.65;
+            color: #4A4654;
+            margin-bottom: 20px;
+        }
+
+        /* Ảnh nhóm hình chữ nhật ở đáy thẻ */
+        .card-image-wrapper {
+            width: 100%;
+            height: 250px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .card-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .timeline-card:hover .card-image-wrapper img {
+            transform: scale(1.03);
+        }
+
+        /* Đường phân cách giữa 2 phần */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--timeline-color), transparent);
+            margin: 50px 0 60px 0;
+            opacity: 0.6;
+        }
+
+        /* ----------------------------------
+           SECTION 2: OTP PHOTOBOOK
+        ---------------------------------- */
+        .photobook-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 25px rgba(200, 100, 120, 0.08);
+        }
+
+        .photobook-title {
+            font-family: 'Leyton', 'Playfair Display', serif;
+            color: var(--title-color);
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .photobook-subtitle {
+            font-family: 'Charmonman', cursive;
+            color: var(--slogan-color);
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* Khu vực Kéo & Thả (Drag and Drop) */
+        .drop-zone {
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px dashed var(--timeline-color);
+            border-radius: 18px;
+            padding: 35px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone:hover, .drop-zone.drag-over {
+            background: rgba(242, 154, 174, 0.2);
+            box-shadow: 0 0 15px rgba(242, 154, 174, 0.3);
+        }
+
+        .drop-zone p {
+            margin-top: 10px;
+            color: #635E6D;
+            font-size: 0.95rem;
+        }
+
+        .btn-upload {
+            display: inline-block;
+            margin-top: 16px;
+            background: var(--timeline-color);
+            color: #FFFFFF;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(242, 154, 174, 0.3);
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(242, 154, 174, 0.5);
+        }
+
+        /* Lưới hiển thị danh sách ảnh Photobook */
+        .photobook-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 18px;
+            margin-top: 30px;
+        }
+
+        .photo-card {
+            position: relative;
+            height: 220px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Nút xóa ảnh */
+        .remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.65);
+            color: #fff;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 28px;
+            text-align: center;
+            transition: background 0.2s ease;
+        }
+
+        .remove-btn:hover {
+            background: #ff4d4d;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 640px) {
+            .timeline-container {
+                padding-left: 35px;
+            }
+            .timeline-rail {
+                left: 10px;
+            }
+            .timeline-node {
+                left: -34px;
+                width: 12px;
+                height: 12px;
+            }
+            .page-header h1 {
+                font-size: 2.1rem;
+            }
+            .card-slogan {
+                font-size: 1.35rem;
+            }
+            .card-image-wrapper {
+                height: 180px;
+            }
+            .photobook-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            }
+            .photo-card {
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <!-- HEADER TRANG -->
+        <header class="page-header">
+            <h1>Hành trình kỷ nguyên BTS</h1>
+            <p>Toàn bộ cột mốc vất vả, vươn tầm và thành công rực rỡ qua từng năm</p>
+        </header>
+
+        <!-- PHẦN 1: TIMELINE BTS -->
+        <div class="timeline-container">
+            <div class="timeline-rail"></div>
+            <div id="timeline-list"></div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- PHẦN 2: OTP PHOTOBOOK (TẢI NHIỀU ẢNH) -->
+        <section class="photobook-section">
+            <h2 class="photobook-title">OTP Photobook</h2>
+            <p class="photobook-subtitle">Lưu giữ những khoảnh khắc yêu thích nhất</p>
+
+            <!-- Khung Kéo & Thả -->
+            <div class="drop-zone" id="dropZone">
+                <svg width="48" height="48" fill="none" stroke="#F29AAE" viewBox="0 0 24 24" stroke-width="2">
+                    <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <p>Kéo & thả nhiều ảnh vào đây hoặc</p>
+                <label for="fileInput" class="btn-upload">Chọn nhiều ảnh từ máy</label>
+                <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Lưới hiển thị danh sách ảnh -->
+            <div class="photobook-grid" id="photobookGrid"></div>
+        </section>
+    </div>
+
+    <script>
+        /* ========================================================
+           1. DỮ LIỆU VÀ XỬ LÝ RENDER TIMELINE BTS
+        ======================================================== */
+        const timelineData = [
+            {
+                date: "13 Tháng 06, 2013",
+                slogan: "Khởi đầu gian khó & Áp lực bủa vây",
+                content: "Debut với '2 Cool 4 Skool' (Single Debut) và ca khúc chủ đề 'No More Dream'. Xuất thân từ công ty nhỏ Big Hit Entertainment đang gánh khoản nợ lớn. Nhóm đối mặt với định kiến, áp lực tài chính, bị cắt sóng truyền hình và những nghi ngại từ công chúng.",
+                image: "https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSc8eqnXVVmD4We_oCH10gfj6KniJzrkFAfzg3vb060fOZy25djZ5sfZVhs8n9RwbMovAYV6COhKUJ8GOM"
+            },
+            {
+                date: "11 Tháng 09, 2013",
+                slogan: "Khát khao tuổi trẻ & Tân binh triển vọng",
+                content: "Ra mắt 'O!RUL8,2?' (Mini Album Vol.1) cùng ca khúc 'N.O', cất lên tiếng nói phản đối hệ thống giáo dục cứng nhắc. Nhóm giành giải 'Tân binh của năm' (Rookie of the Year) tại MelOn Music Awards, khẳng định ý chí bền bỉ của 7 thành viên.",
+                image: "https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSc8eqnXVVmD4We_oCH10gfj6KniJzrkFAfzg3vb060fOZy25djZ5sfZVhs8n9RwbMovAYV6COhKUJ8GOM"
+            },
+            {
+                date: "12 Tháng 02, 2014",
+                slogan: "Trăn trở định hướng & Thử thách rèn luyện",
+                content: "Ra mắt 'Skool Luv Affair' (Mini Album Vol.2) cùng bài hát chủ đề 'Boy In Luv'. Lần đầu tiên BTS được đề cử vị trí #1 trên chương trình âm nhạc hàng tuần tại Hàn Quốc, mở rộng cộng đồng fan hâm mộ (ARMY). Nhóm sang Mỹ tham gia 'American Hustle Life' rèn luyện Hip-hop khắc nghiệt.",
+                image: "https://farm6.staticflickr.com/5752/21524024348_ddc434fd13_o.jpg"
+            },
+            {
+                date: "19 Tháng 08, 2014",
+                slogan: "Khẳng định màu sắc & Full Album đầu tay",
+                content: "Phát hành 'Dark & Wild' (Full Album đầu tay) với ca khúc chủ đề 'Danger'. Dù doanh số giai đoạn này chưa bùng nổ vươn xa nhưng đã đặt dấu ấn trưởng thành quan trọng trong kỹ năng sản xuất âm nhạc đậm chất Hip-hop.",
+                image: "https://farm6.staticflickr.com/5752/21524024348_ddc434fd13_o.jpg"
+            },
+            {
+                date: "29 Tháng 04, 2015",
+                slogan: "Bước ngoặt sinh tử & Chiến thắng First Win",
+                content: "Mở ra kỷ nguyên 'Hoa Dạng Niên Hoa' (HYYH Pt.1). 'I NEED U' mang về Cúp chiến thắng chương trình âm nhạc đầu tiên (First Win) tại The Show (05/05/2015). MV 'DOPE' sau đó giúp nhóm bùng nổ lượng fan quốc tế khổng lồ trên YouTube.",
+                image: "https://farm6.staticflickr.com/5752/21524024348_ddc434fd13_o.jpg"
+            },
+            {
+                date: "30 Tháng 11, 2015",
+                slogan: "Nhiệt huyết thanh xuân & Dấu ấn Billboard 200",
+                content: "Phát hành 'HYYH Pt.2' cùng ca khúc chủ đề 'RUN'. Lần đầu tiên trong sự nghiệp, BTS chạm tay tiến vào bảng xếp hạng Billboard 200 danh giá ở vị trí #171.",
+                image: "https://farm6.staticflickr.com/5752/21524024348_ddc434fd13_o.jpg"
+            },
+            {
+                date: "10 Tháng 10, 2016",
+                slogan: "Đỉnh cao 'WINGS' & Daesang Lịch Sử",
+                content: "Phát hành 'WINGS' cùng bản hit 'Blood Sweat & Tears'. Album đạt vị trí #26 trên Billboard 200 (kỷ lục K-pop thời điểm đó). BTS giành giải Daesang 'Album của năm' tại MMA 2016 và 'Nghệ sĩ của năm' tại MAMA 2016.",
+                image: "https://0.soompi.io/wp-content/uploads/2016/10/09111131/bts2.png"
+            },
+            {
+                date: "21 Tháng 05, 2017",
+                slogan: "Vươn tầm siêu sao & Thắng giải BBMAs",
+                content: "BTS đoạt giải 'Top Social Artist' tại Billboard Music Awards (BBMAs) 2017, chấm dứt 6 năm thống trị của Justin Bieber. Album 'LOVE YOURSELF 承 Her' cùng 'DNA' lần đầu tiên lọt Billboard Hot 100 (#85) và nhóm trình diễn bùng nổ tại AMAs 2017.",
+                image: "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSIq0XP0qnhCvPxipHvOwTwlNbjrCUMjINX7Rr_JCNYBYX7emGNbDKzeArqxPIjnfUdvNqWcoGhbDBbgZ4"
+            },
+            {
+                date: "18 Tháng 05, 2018",
+                slogan: "Vượt qua khủng hoảng & Đỉnh cao #1 Billboard 200",
+                content: "Trải qua áp lực tâm lý khủng hoảng đầu năm 2018, nhóm đã siết chặt tay nhau vượt qua khó khăn. Phát hành 'LOVE YOURSELF 轉 Tear' (#1 Billboard 200) và single 'FAKE LOVE' lọt Top 10 Billboard Hot 100.",
+                image: "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSIq0XP0qnhCvPxipHvOwTwlNbjrCUMjINX7Rr_JCNYBYX7emGNbDKzeArqxPIjnfUdvNqWcoGhbDBbgZ4"
+            },
+            {
+                date: "24 Tháng 08, 2018",
+                slogan: "Thông điệp nhân văn & Phát biểu tại Liên Hợp Quốc",
+                content: "Phát hành 'LOVE YOURSELF 結 Answer' với ca khúc 'IDOL'. BTS có buổi phát biểu truyền cảm hứng lịch sử tại Đại hội đồng Liên Hợp Quốc (UN) mang tên 'Love Yourself, Speak Yourself'.",
+                image: "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSIq0XP0qnhCvPxipHvOwTwlNbjrCUMjINX7Rr_JCNYBYX7emGNbDKzeArqxPIjnfUdvNqWcoGhbDBbgZ4"
+            },
+            {
+                date: "21 Tháng 08, 2020",
+                slogan: "Chinh phục thế giới & Quán quân #1 Billboard Hot 100",
+                content: "Siêu phẩm tiếng Anh 'Dynamite' ra mắt mang về vị trí #1 Billboard Hot 100 lịch sử đầu tiên cho nghệ sĩ Hàn Quốc, đồng thời nhận đề cử giải GRAMMY. Tiếp đó, 'Life Goes On' (Album BE) trở thành bài hát tiếng Hàn đầu tiên ra mắt thẳng ở vị trí #1 Hot 100.",
+                image: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcTKh-141CIioT0OVIhJ3b6Tc0_S82YjLk_As3imFEiKCxODrMyHtOya1B9vN4crioGjPUsvCHH9e6l0a0Q"
+            },
+            {
+                date: "10 Tháng 06, 2022",
+                slogan: "Lời tri ân 'Proof' & Tạm dừng để trưởng thành",
+                content: "Phát hành Anthology Album 'Proof' nhìn lại hành trình 9 năm rực rỡ. Nhóm thông báo bước vào chương mới: vừa thực hiện nghĩa vụ quân sự bắt buộc, vừa đẩy mạnh các hoạt động solo cá nhân bùng nổ của 7 thành viên.",
+                image: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcSiIwYjPBP_vrJewmdUEWXGPkcqYxS5npBjY3QUqb7wjd4fch29WheZDnTfblzBj4VvsLCU3f9XX9GFkdY"
+            },
+            {
+                date: "2025 - 2026",
+                slogan: "Hội ngộ toàn diện & Tái xuất kỷ nguyên mới",
+                content: "Sau khi tất cả thành viên hoàn thành nghĩa vụ quân sự và gia hạn hợp đồng với Big Hit Music, BTS tái xuất với đội hình đầy đủ 7 người, sẵn sàng cho hành trình thế giới và album mới đầy hứa hẹn.",
+                image: "https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSCFM1C5R1Khg3tMREXJpYmKgwO4Xe0LLPkqt3X50cRt4rutjRnsR38g0YavAXwE-QxRc0As2yjD3Nvdms"
+            }
+        ];
+
+        function renderTimeline() {
+            const listContainer = document.getElementById('timeline-list');
+            listContainer.innerHTML = '';
+
+            timelineData.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = 'timeline-card';
+
+                card.innerHTML = `
+                    <div class="timeline-node"></div>
+                    <div class="card-date-badge">${item.date}</div>
+                    <div class="card-slogan">${item.slogan}</div>
+                    <div class="card-content">${item.content}</div>
+                    <div class="card-image-wrapper">
+                        <img src="${item.image}" alt="BTS - ${item.date}" loading="lazy">
+                    </div>
+                `;
+
+                listContainer.appendChild(card);
+            });
+        }
+
+        /* ========================================================
+           2. XỬ LÝ TẢI NHIỀU ẢNH CHO OTP PHOTOBOOK
+        ======================================================== */
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.getElementById('dropZone');
+        const photobookGrid = document.getElementById('photobookGrid');
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            if (e.dataTransfer.files.length > 0) {
+                handleFiles(e.dataTransfer.files);
+            }
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    createPhotoCard(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function createPhotoCard(imageSrc) {
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+
+            card.innerHTML = `
+                <img src="${imageSrc}" alt="OTP Photo">
+                <button class="remove-btn" title="Xóa ảnh" onclick="this.parentElement.remove()">✕</button>
+            `;
+
+            photobookGrid.appendChild(card);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTimeline();
+        });
+    </script>
+</body>
+</html>
